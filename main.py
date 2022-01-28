@@ -77,7 +77,7 @@ def main():
         pass
     for i in range (1):
         first, second = mutate.orderCrossover(best_tours[0], best_tours[1], NUM_CITIES)
-        print("First point: ", first, ", second point: ", second)
+        print("First child: ", first, ", second child: ", second)
        
 
   

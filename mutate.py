@@ -47,6 +47,4 @@ def orderCrossover (parent_1, parent_2, NUM_CITIES):
             child_index = util.getCrossoverIndex(child_index, NUM_CITIES)
         parent_index = util.getCrossoverIndex(parent_index, NUM_CITIES)
 
-    print("\nChild 1 tour is: \n",child_1)
-    print("Child 2 tour is: \n",child_2)
-    return first_point, second_point
+    return child_1, child_2
