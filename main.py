@@ -11,11 +11,11 @@ import grid, util, sys, tour, mutate
 #################################################
 
 #set this to  desired generations
-NUM_GENERATIONS = 100
+NUM_GENERATIONS = 500
 #set this to the desired population size
 POPULATION_SIZE = 50
 #set this to the desired number of cities
-NUM_CITIES = 9
+NUM_CITIES = 25
 #Number of elites to carry over and worsts to get rid of
 ELITE_SIZE, WORST_SIZE = 4, 4
 #set the number of parents to select for breeding
@@ -53,6 +53,7 @@ def main():
     
     print("\nWelcome to the 'Traveling Salesperson' route finding application\n")
 
+
     for i in range (NUM_GENERATIONS):
         #TODO!!! ensure that the population doesn't converge into a bunch of replicas
       
@@ -66,24 +67,24 @@ def main():
             #TODO: handle/call the four different operators here
         
         #select the worst individuals for removal
-        print("The current generation currently has a length of: ", len(current_population))
-        util.getSacrifice(cost_map, current_population, worst_tours)
-        print("The current generation now has a length of: ", len(current_population))
+        
+        util.getSacrifice(cost_map, current_population, list_of_tours, worst_tours)
        
         #randomly select additional individuals to kill
             #we will use this if we want to kill off additional tours
             #and make more children
 
         #fill and order this generation, make tour objects out of our children
-        util.setChildren(children, current_population, cost_map, city_tour, i+2)
-        print("Cost map length: ", len(cost_map))
-
-        
-
+        util.setChildren(children, current_population, cost_map, city_tour, list_of_tours, i+2)
+               
+       
         util.getWorstTours(WORST_SIZE, worst_tours, cost_map)
+        util.getBestTours(1, best_tours, cost_map)
+        
+        if i % 10 == 0: print("The best currently is: ", best_tours[0].getCost(), " From generation: ", best_tours[0].getGeneration())
+        best_tours.clear()
 
-
-
+    print ("All done!")
 
 if __name__=='__main__':
         main()

@@ -1,5 +1,6 @@
 import copy
 from math import inf
+from tracemalloc import stop
 import grid, tour, random, mutate
 from main import NUM_CITIES, POPULATION_SIZE, ELITE_SIZE, NUM_PARENTS
 
@@ -72,18 +73,23 @@ def seedFirstGeneration(population_size, city_tour, current_population, cost_map
         x.setTour(city_tour.getRandomTour())
         x.setCost(getTourCost(x.getTour(), city_tour.getGrid()))
         #ensure that we don't seed our first generation with replicas
-        if (x.getCost() not in cost_map.keys()) and (x.getTour() not in list_of_tours):
+        if x.getCost() not in cost_map.keys():
             current_population.append(x)
             list_of_tours.append(x.getTour())
             cost_map[x.getCost()] = x
 
 #maps tour cost to tour object for later assessment
 #tour cost is esseentially our fitness
-def mapTourList(current_population):
-    temp_map = {}
+def mapTourList(cost_map, current_population, list_of_tours):
+    cost_map.clear()
     for tour in current_population:
-        temp_map[tour.getCost()] = tour
-    return temp_map
+        cost_map[tour.getCost()] = tour
+    #get rid of duplicates in population
+    current_population.clear()
+    list_of_tours.clear()
+    for i, (j,k) in enumerate(cost_map.items()):
+        current_population.append(k)
+        list_of_tours.append(k.getTour())
 
 #returns a map of the best tours (cost mapped to tour object)
 def getBestTours(num_tours, best_tours ,cost_map):
@@ -101,7 +107,7 @@ def getWorstTours(num_tours, worst_tours, cost_map):
 #used for crossing over genes in gene crossover operator
 def getCrossoverIndex(index, length):
     if index >= length-1:
-        return 0
+        return 1
     return index+1
 
 #calls breeding operators and selects the next generation
@@ -135,23 +141,28 @@ def breedCrossover (parents):
         children.append(child2)
     return children
 
-#remove worst individuals from population
-def getSacrifice(cost_map, current_population, worst_tours):
-    for item in worst_tours:                    
+#remove worst individuals from population, don't let population drop below 50 individua;ls
+def getSacrifice(cost_map, current_population, list_of_tours, worst_tours):
+    if len(cost_map) >= 50:
+        for item in worst_tours:                    
+            list_of_tours.remove(item.getTour())
             current_population.remove(item)
-            del cost_map[item.getCost()]
+    mapTourList(cost_map, current_population, list_of_tours)
+                    
     worst_tours.clear()
 
 
-#fill and order this generation
-
-
 #make tour objects out of our children
-def setChildren(children, current_population, cost_map, city_tour, generation):
+def setChildren(children, current_population, cost_map, city_tour, list_of_tours, generation):
     for child in children:
         x = tour.Tour()
         x.setGeneration(generation)
         x.setTour(child)
         x.setCost(getTourCost(x.getTour(), city_tour.getGrid()))
         current_population.append(x)
+        list_of_tours.append(x.getTour())
         cost_map[x.getCost()] = x
+        if x in current_population:
+            if x.getCost() in cost_map.keys():
+                pass
+            else: print("stop")
