@@ -22,6 +22,9 @@ class Tour:
     def setCost (self, val):
         self.cost = val
 
+    def incrementGeneration(self):
+        self.generation+=1
+
     def getTour (self):
         return self.tour
 

@@ -1,4 +1,5 @@
-from math import cos, inf
+from math import inf
+from os import remove
 import grid, util, sys, tour, mutate
 
 
@@ -10,13 +11,19 @@ import grid, util, sys, tour, mutate
 #################################################
 
 #set this to  desired generations
-MAX_GENERATIONS = 100
+NUM_GENERATIONS = 100
 #set this to the desired population size
-MAX_POPULATION = 10
+POPULATION_SIZE = 50
 #set this to the desired number of cities
 NUM_CITIES = 9
-#stores the current population of tours
+#Number of elites to carry over and worsts to get rid of
+ELITE_SIZE, WORST_SIZE = 4, 4
+#set the number of parents to select for breeding
+NUM_PARENTS = 4
+#stores the current population of tour objects
 current_population = []
+#stores the tours for replica checking
+list_of_tours = []
 #maps trip cost to tour object
 cost_map = {}
 #stores the top x of the tours for reproduction
@@ -26,24 +33,7 @@ worst_tours = []
 #this is the cost grid that we will use for all 12 runs
 city_tour = grid.Grid(NUM_CITIES)
 
-def initialize ():
-    #city_tour is the grid object to pass to the genetic algorithms
-    #setGrid is required to establish cost to travel from city to city
-    #getRandomTour can be used to seed the initial generation
-    
-    city_tour.setGrid()
-    
-    #populate initial generation
-    util.seedFirstGeneration(MAX_POPULATION, city_tour, current_population)
 
-    #map tour cost to the tour object and sort by tour cost
-    cost_map = util.mapTourList(current_population)
-  
-    #get best and worst tours for easy reference
-    #best tours will reproduce, worst tours will be replaced
-    best_tours = util.getBestTours(2, cost_map)
-    worst_tours= util.getWorstTours(2, cost_map)
-    return cost_map, best_tours, worst_tours
 
 def main():
     
@@ -59,50 +49,44 @@ def main():
     user_input = None
 
     #seed first generation and get initial best/worst cost values
-    cost_map, best_tours, worst_tours = initialize()
-  
-
-    #below print statements are for debugging purposes only
-    print("\nAll tours:")
-    for i in sorted(cost_map.keys()):
-        print (i, cost_map[i])
-    print("\nBest tours:")
-    for i in best_tours:
-        print (i.getCost(), i)
-    print("\nWorst tours:")
-    for i in worst_tours:
-        print (i.getCost(), i)
-    print()
-    for tour in best_tours:
-        pass
-    for i in range (1):
-        first, second = mutate.orderCrossover(best_tours[0], best_tours[1], NUM_CITIES)
-        print("First child: ", first, ", second child: ", second)
-       
-
-  
-
-
+    util.initialize(city_tour, current_population, cost_map, worst_tours, best_tours, list_of_tours, WORST_SIZE)
+    
     print("\nWelcome to the 'Traveling Salesperson' route finding application\n")
 
-    #run this until user chooses to exit
-    while True:            
+    for i in range (NUM_GENERATIONS):
+        #TODO!!! ensure that the population doesn't converge into a bunch of replicas
+      
+        #select parents for tournament selection        
+        parents = util.getTournamentParents(current_population, NUM_PARENTS)
+        
+        #perform crossover        
+        children = util.breedCrossover(parents)
+        
+        #perform additional mutations
+            #TODO: handle/call the four different operators here
+        
+        #select the worst individuals for removal
+        print("The current generation now has a length of: ", len(current_population))
+        util.getSacrifice(cost_map, current_population, worst_tours)
+        print("The current generation now has a length of: ", len(current_population))
+       
+        #randomly select additional individuals to kill
+            #we will use this if we want to kill off additional tours
+            #and make more children
 
-        city_tour.displayGrid()
+        #fill and order this generation, make tour objects out of our children
+        util.setChildren(children, current_population, cost_map, city_tour, i+2)
+        print("Cost map length: ", len(cost_map))
 
-        #Exit protocol, if user is finished then sys.exit()
-        user_input = input("Would you like to run the program again?, Enter 'Y' to continue or any other key to exit: ")
-        if user_input is not 'Y' and user_input is not 'y': sys.exit()
-        else:
-            #reset the best variables
-            best_insert_tour = []
-            best_insert_cost = inf
-            best_swap_tour = []
-            best_swap_cost = inf
-            best_inversion_tour = []
-            best_inversion_cost = inf
-            best_scramble_tour = []
-            best_scramble_cost = inf
+        #check for duplicates and replace them with new children
+        #add a new child until our cost map is back up to 50
+        #while len(cost_map)<50:
+         #   pass
+
+        util.getWorstTours(WORST_SIZE, worst_tours, cost_map)
+
+
+
 
 if __name__=='__main__':
         main()

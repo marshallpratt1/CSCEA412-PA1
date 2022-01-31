@@ -14,6 +14,7 @@ def orderCrossover (parent_1, parent_2, NUM_CITIES):
     parent_2_tour = parent_2.getTour()
     child_1, child_2 = [None]*NUM_CITIES,[None]*NUM_CITIES
 
+    """
     #test begins here
     parent_1_tour = [1,2,3,4,5,6,7,8,9]
     parent_2_tour = [9,3,7,8,2,6,5,1,4]
@@ -23,6 +24,7 @@ def orderCrossover (parent_1, parent_2, NUM_CITIES):
     print("Parent 2 is: ", parent_2_tour)
     print("\nCrossover point is between ", first_point, "and ", second_point)    
     #test ends here
+    """
     
     #return children in appropriate order
     for i in range(first_point,second_point):
