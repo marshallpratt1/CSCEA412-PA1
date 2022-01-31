@@ -66,7 +66,7 @@ def main():
             #TODO: handle/call the four different operators here
         
         #select the worst individuals for removal
-        print("The current generation now has a length of: ", len(current_population))
+        print("The current generation currently has a length of: ", len(current_population))
         util.getSacrifice(cost_map, current_population, worst_tours)
         print("The current generation now has a length of: ", len(current_population))
        
@@ -78,10 +78,7 @@ def main():
         util.setChildren(children, current_population, cost_map, city_tour, i+2)
         print("Cost map length: ", len(cost_map))
 
-        #check for duplicates and replace them with new children
-        #add a new child until our cost map is back up to 50
-        #while len(cost_map)<50:
-         #   pass
+        
 
         util.getWorstTours(WORST_SIZE, worst_tours, cost_map)
 
