@@ -11,15 +11,15 @@ import grid, util, sys, tour, mutate
 #################################################
 
 #set this to  desired generations
-NUM_GENERATIONS = 500
+NUM_GENERATIONS = 5000
 #set this to the desired population size
 POPULATION_SIZE = 50
 #set this to the desired number of cities
 NUM_CITIES = 25
 #Number of elites to carry over and worsts to get rid of
-ELITE_SIZE, WORST_SIZE = 4, 4
+ELITE_SIZE, WORST_SIZE = 10, 10
 #set the number of parents to select for breeding
-NUM_PARENTS = 4
+NUM_PARENTS = 10
 #stores the current population of tour objects
 current_population = []
 #stores the tours for replica checking
@@ -81,7 +81,7 @@ def main():
         util.getWorstTours(WORST_SIZE, worst_tours, cost_map)
         util.getBestTours(1, best_tours, cost_map)
         
-        if i % 10 == 0: print("The best currently is: ", best_tours[0].getCost(), " From generation: ", best_tours[0].getGeneration())
+        if i % 100 == 0: print("The best currently is: ", best_tours[0].getCost(), " From generation: ", best_tours[0].getGeneration())
         best_tours.clear()
 
     print ("All done!")

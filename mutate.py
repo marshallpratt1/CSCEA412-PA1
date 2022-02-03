@@ -8,7 +8,7 @@ import random, tour, util
 #and performs the order crossover operation
 def orderCrossover (parent_1, parent_2, NUM_CITIES):
     #get cross points and values for crossover/shifting
-    first_point = random.randrange(0,NUM_CITIES-1)
+    first_point = random.randrange(1,NUM_CITIES-1)
     second_point = random.randrange(first_point+1, NUM_CITIES)
     parent_1_tour = parent_1.getTour()
     parent_2_tour = parent_2.getTour()
@@ -49,4 +49,5 @@ def orderCrossover (parent_1, parent_2, NUM_CITIES):
             child_index = util.getCrossoverIndex(child_index, NUM_CITIES)
         parent_index = util.getCrossoverIndex(parent_index, NUM_CITIES)
 
+    child_1[0], child_2[0] = 0, 0
     return child_1, child_2

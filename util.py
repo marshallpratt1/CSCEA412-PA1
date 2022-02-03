@@ -117,7 +117,7 @@ def getTournamentParents (curr_gen, how_many):
     for i in range(how_many): 
         #get 4 parents for each round of tournament
         candidate_parents = []
-        for j in range(4):
+        for j in range(2):
             candidate_parent = curr_gen[random.randrange(0, POPULATION_SIZE)]
             while candidate_parent in candidate_parents:
                 candidate_parent = curr_gen[random.randrange(0, POPULATION_SIZE)]
