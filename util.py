@@ -26,7 +26,6 @@ def initialize (city_tour, current_population, cost_map, worst_tours, best_tours
     #setGrid is required to establish cost to travel from city to city
     #getRandomTour can be used to seed the initial generation    
     city_tour.setGrid()
-    
     #populate initial generation
     seedFirstGeneration(POPULATION_SIZE, city_tour, current_population, cost_map, list_of_tours)
 
@@ -61,6 +60,14 @@ def getTourCost(tour, cost_graph):
 
     copy_of_tour.clear()
     return cost
+
+#reset the variables after a run
+def reset (current_population, cost_map, best_tours, worst_tours, list_of_tours, city_tour, worst_size, best_size):
+    current_population.clear(), list_of_tours.clear(), cost_map.clear()
+    worst_tours.clear(), best_tours.clear()
+    seedFirstGeneration(POPULATION_SIZE, city_tour, current_population, cost_map, list_of_tours)
+    getWorstTours(worst_size, worst_tours, cost_map)
+    getBestTours(best_size, best_tours, cost_map)
 
 
 #seeds initial generation with a randomly generated population
@@ -166,3 +173,27 @@ def setChildren(children, current_population, cost_map, city_tour, list_of_tours
             if x.getCost() in cost_map.keys():
                 pass
             else: print("stop")
+
+#handles the insert Mutation
+def insertMutation(temp):
+    #TODO: write and handle insert mutation
+    print ("insert called, :", temp, " passed in...")
+    return "Insert Mutation"
+
+#handles the swap Mutation
+def swapMutation(temp):
+    #TODO: write and handle swap mutation
+    print ("swap called, :", temp, " passed in...")
+    return "Swap Mutation"
+
+#handles the inversion Mutation
+def inversionMutation(temp):
+    #TODO: write and handle inversion mutation
+    print ("inversion called, :", temp, " passed in...")
+    return "Inversion Mutation"
+
+#handles the insert Mutation
+def scrambleMutation(temp):
+    #TODO: write and handle scramble mutation
+    print ("scramble called, :", temp, " passed in...")
+    return "Scramble Mutation"
