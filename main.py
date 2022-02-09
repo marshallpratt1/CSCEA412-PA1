@@ -41,6 +41,11 @@ run_map = {
     2: "Inversion Mutation",
     3: "Scramble Mutation"
 }
+insertMutChance = .2
+swapMutChance = .2
+invMutChance = .2
+scramMutChance = .2
+
 
 
 
@@ -86,7 +91,24 @@ def main():
                 #perform additional mutations
                 #TODO: handle/call the four different operators here
                 #mutation operators can be called as outlined below:
-                #mutation_map[mutation](variables)
+
+                #Uncomment below to see the mutation
+
+                print(children)
+                if mutation_map[mutation] is mutation_map[0]:
+                    children = mutation_map[mutation](children, insertMutChance)
+                elif mutation_map[mutation] is mutation_map[1]:
+                    children = mutation_map[mutation](children, swapMutChance)
+                elif mutation_map[mutation] is mutation_map[2]:
+                    #TODO Marshall Cherrier
+                    #children = mutation_map[mutation](children, invMutChance)
+                    print("stub")
+                elif mutation_map[mutation] is mutation_map[3]:
+                    #TODO Marshall Cherrier
+                    #children = mutation_map[mutation](children, scramMutChance)
+                    print("stub")
+
+
                 ########################################################################                    
                 
                 

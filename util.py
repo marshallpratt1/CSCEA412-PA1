@@ -3,6 +3,7 @@ from math import inf
 from tracemalloc import stop
 import grid, tour, random, mutate
 from main import NUM_CITIES, POPULATION_SIZE, ELITE_SIZE, NUM_PARENTS
+from datetime import datetime
 
 ################################################################
 #util.py
@@ -175,16 +176,52 @@ def setChildren(children, current_population, cost_map, city_tour, list_of_tours
             else: print("stop")
 
 #handles the insert Mutation
-def insertMutation(temp):
-    #TODO: write and handle insert mutation
-    print ("insert called, :", temp, " passed in...")
-    return "Insert Mutation"
+#I made the randomness seed off of time here and then reseed when picking instances
+def insertMutation(children, mutationchance):
+    print("Before mutation:")
+    print(children)
+    for i in range(len(children)):
+        random.seed(datetime.now())
+        #random.seed(tuple(children[i]))
+        val = random.uniform(0,1)
+        if val <= mutationchance:
+            random.seed(datetime.now())
+            firstindex, secondindex= random.sample(range(len(children[i])-1), 2)
+            secondNum = children[i][secondindex]
+            print(firstindex)
+            print(secondindex)
+            hold = children[i][secondindex]
+            for j in range(secondindex,firstindex, -1):
+                children[i][j] = children[i][j-1]
+            children[i][firstindex+1] = hold
+    print("After mutation")
+    print(children)
+    print("\n")
+    return children
+
+
 
 #handles the swap Mutation
-def swapMutation(temp):
-    #TODO: write and handle swap mutation
-    print ("swap called, :", temp, " passed in...")
-    return "Swap Mutation"
+def swapMutation(children, mutationchance):
+    print("Before mutation:")
+    print(children)
+    for i in range(len(children)):
+        #TODO I notice that if we hit the mutation chance for one the other automatically works, any ideas as to why?
+        random.seed(datetime.now())
+        #random.seed(tuple(children[i]))
+        val = random.uniform(0, 1)
+        if val <= mutationchance:
+            random.seed(datetime.now())
+            firstindex, secondindex = random.sample(range(len(children[i]) - 1), 2)
+            print(firstindex)
+            print(secondindex)
+            hold = children[i][firstindex]
+            children[i][firstindex] = children[i][secondindex]
+            children[i][secondindex] = hold
+    print("After mutation")
+    print(children)
+    print("\n")
+    return children
 
 #handles the inversion Mutation
 def inversionMutation(temp):
