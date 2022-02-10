@@ -94,19 +94,16 @@ def main():
 
                 #Uncomment below to see the mutation
 
-                print(children)
                 if mutation_map[mutation] is mutation_map[0]:
                     children = mutation_map[mutation](children, insertMutChance)
                 elif mutation_map[mutation] is mutation_map[1]:
                     children = mutation_map[mutation](children, swapMutChance)
                 elif mutation_map[mutation] is mutation_map[2]:
                     #TODO Marshall Cherrier
-                    #children = mutation_map[mutation](children, invMutChance)
-                    print("stub")
+                    pass#children = mutation_map[mutation](children, invMutChance)
                 elif mutation_map[mutation] is mutation_map[3]:
                     #TODO Marshall Cherrier
-                    #children = mutation_map[mutation](children, scramMutChance)
-                    print("stub")
+                    pass#children = mutation_map[mutation](children, scramMutChance)
 
 
                 ########################################################################                    

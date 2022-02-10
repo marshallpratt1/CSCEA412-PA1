@@ -178,49 +178,40 @@ def setChildren(children, current_population, cost_map, city_tour, list_of_tours
 #handles the insert Mutation
 #I made the randomness seed off of time here and then reseed when picking instances
 def insertMutation(children, mutationchance):
-    print("Before mutation:")
-    print(children)
     for i in range(len(children)):
+        #Determine if we mutate or not
         random.seed(datetime.now())
-        #random.seed(tuple(children[i]))
         val = random.uniform(0,1)
         if val <= mutationchance:
             random.seed(datetime.now())
-            firstindex, secondindex= random.sample(range(len(children[i])-1), 2)
-            secondNum = children[i][secondindex]
-            print(firstindex)
-            print(secondindex)
+            firstindex, secondindex= random.sample(range(1, len(children[i])-1), 2)
+            #Swap indexes if out of order
+            if firstindex > secondindex:
+                hold = firstindex
+                firstindex = secondindex
+                secondindex = hold
             hold = children[i][secondindex]
+            #Shift our numbers up
             for j in range(secondindex,firstindex, -1):
                 children[i][j] = children[i][j-1]
             children[i][firstindex+1] = hold
-    print("After mutation")
-    print(children)
-    print("\n")
     return children
 
 
 
 #handles the swap Mutation
 def swapMutation(children, mutationchance):
-    print("Before mutation:")
-    print(children)
     for i in range(len(children)):
-        #TODO I notice that if we hit the mutation chance for one the other automatically works, any ideas as to why?
+        # Determine if we mutate or not
         random.seed(datetime.now())
-        #random.seed(tuple(children[i]))
         val = random.uniform(0, 1)
         if val <= mutationchance:
             random.seed(datetime.now())
-            firstindex, secondindex = random.sample(range(len(children[i]) - 1), 2)
-            print(firstindex)
-            print(secondindex)
+            firstindex, secondindex = random.sample(range(1,len(children[i]) - 1), 2)
+            #Use hold variables to swap values
             hold = children[i][firstindex]
             children[i][firstindex] = children[i][secondindex]
             children[i][secondindex] = hold
-    print("After mutation")
-    print(children)
-    print("\n")
     return children
 
 #handles the inversion Mutation
