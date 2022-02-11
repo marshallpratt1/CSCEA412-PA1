@@ -215,13 +215,41 @@ def swapMutation(children, mutationchance):
     return children
 
 #handles the inversion Mutation
-def inversionMutation(temp):
-    #TODO: write and handle inversion mutation
-    print ("inversion called, :", temp, " passed in...")
-    return "Inversion Mutation"
+def inversionMutation(children, mutation_chance):
+    for i in range (len(children)):
+        random.seed(datetime.now())
+        val = random.uniform(0,1)
+        if val <= mutation_chance:
+            random.seed(datetime.now())
+            first_index, second_index = random.sample(range(1,len(children[i]) - 1), 2)
+            if first_index > second_index:
+                hold = first_index
+                first_index = second_index
+                second_index = hold
+            inverse_list = children[0:first_index] + children[second_index:first_index-1:-1] + children[second_index+1:]
+            children = inverse_list
+    return children
 
-#handles the insert Mutation
-def scrambleMutation(temp):
-    #TODO: write and handle scramble mutation
-    print ("scramble called, :", temp, " passed in...")
-    return "Scramble Mutation"
+#handles the scramble Mutation
+def scrambleMutation(children, mutation_chance):
+    alleles = []
+    for i in range (len(children)):
+        random.seed(datetime.now())
+        val = random.uniform(0,1)
+        if val <= mutation_chance:
+            random.seed(datetime.now())
+            num_alleles = random.randint(1, 24)
+            while num_alleles != 0:
+                allele_index = random.randint(1, 24)
+                this_allele = children[i][allele_index]
+                if this_allele is True:
+                    continue
+                alleles.append(this_allele)
+                children[i][allele_index] = True
+                num_alleles -= 1 
+            random.shuffle(alleles)
+            for x in range(len(children[i])):
+                if children[i][x] is True:
+                    children[i][x] = alleles[0]
+                    del alleles[0]  
+    return children

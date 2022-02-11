@@ -100,10 +100,10 @@ def main():
                     children = mutation_map[mutation](children, swapMutChance)
                 elif mutation_map[mutation] is mutation_map[2]:
                     #TODO Marshall Cherrier
-                    pass#children = mutation_map[mutation](children, invMutChance)
+                    children = mutation_map[mutation](children, invMutChance)
                 elif mutation_map[mutation] is mutation_map[3]:
                     #TODO Marshall Cherrier
-                    pass#children = mutation_map[mutation](children, scramMutChance)
+                    children = mutation_map[mutation](children, scramMutChance)
 
 
                 ########################################################################                    
