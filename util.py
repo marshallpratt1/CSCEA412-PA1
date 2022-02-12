@@ -216,24 +216,26 @@ def swapMutation(children, mutationchance):
 
 #handles the inversion Mutation
 def inversionMutation(children, mutation_chance):
-    for i in range (len(children)):
+    new_children = copy.deepcopy(children)
+    for i in range (len(new_children)):
         random.seed(datetime.now())
         val = random.uniform(0,1)
         if val <= mutation_chance:
             random.seed(datetime.now())
-            first_index, second_index = random.sample(range(1,len(children[i]) - 1), 2)
+            first_index, second_index = random.sample(range(1,len(new_children[i]) - 1), 2)
             if first_index > second_index:
                 hold = first_index
                 first_index = second_index
                 second_index = hold
-            inverse_list = children[0:first_index] + children[second_index:first_index-1:-1] + children[second_index+1:]
-            children = inverse_list
-    return children
+            inverse_list = new_children[0:first_index] + new_children[second_index:first_index-1:-1] + new_children[second_index+1:]
+            new_children = inverse_list
+    return new_children
 
 #handles the scramble Mutation
 def scrambleMutation(children, mutation_chance):
     alleles = []
-    for i in range (len(children)):
+    new_children = copy.deepcopy(children)
+    for i in range (len(new_children)):
         random.seed(datetime.now())
         val = random.uniform(0,1)
         if val <= mutation_chance:
@@ -241,15 +243,15 @@ def scrambleMutation(children, mutation_chance):
             num_alleles = random.randint(1, 24)
             while num_alleles != 0:
                 allele_index = random.randint(1, 24)
-                this_allele = children[i][allele_index]
+                this_allele = new_children[i][allele_index]
                 if this_allele is True:
                     continue
                 alleles.append(this_allele)
-                children[i][allele_index] = True
+                new_children[i][allele_index] = True
                 num_alleles -= 1 
             random.shuffle(alleles)
-            for x in range(len(children[i])):
-                if children[i][x] is True:
-                    children[i][x] = alleles[0]
+            for x in range(len(new_children[i])):
+                if new_children[i][x] is True:
+                    new_children[i][x] = alleles[0]
                     del alleles[0]  
-    return children
+    return new_children
